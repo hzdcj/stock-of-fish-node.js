@@ -20,6 +20,7 @@ client.query('USE cocos');
 io.sockets.on('connection', function (socket) {
     var ss = "";
     socket.emit('callConnect', ss);
+    console.log(socket.id);
     socket.on('create', function (data) {
         var str = eval("(" + data + ")");
         client.query(' CREATE TABLE IF NOT EXISTS CCC (id int PRIMARY KEY AUTO_INCREMENT,content varchar(255),flag int(5),farIp varchar(255))');
@@ -80,12 +81,12 @@ io.sockets.on('connection', function (socket) {
     	            var sql7 = 'update CCC set flag=0,farIp=? where content=?';
     	            var sql8 = [data,res[0].content];	            
     	            client.query(sql7,sql8);
-    	            io.sockets.emit('findAllCallBack', res[0].content);
-    	            //socket.emit('findAllCallBack', res[0].content);
-    	            //var socketid = hashName[res[0].content];
+    	            //io.sockets.emit('findAllCallBack', res[0].content);
+    	            socket.emit('findAllCallBack', res[0].content);
+    	            var socketid = hashName[res[0].content];
     	            //console.log(socket.id);
     	            //console.log(socketid);
-    	            //io.sockets.connected[socketid].emit('findAllCallBack', data);
+    	            io.sockets.connected[socketid].emit('findAllCallBack', data);
     	                       
     	        }
     	        else {
